@@ -49,7 +49,7 @@
           <li class="nav-item" id="nav-item-collections"><a href="#collections" class="nav-link">COLLECTIONS</a></li>
           <li class="nav-item" id="nav-item-kids"><a href="#kids" class="nav-link">KIDS ADVENTURE</a></li>
           <li class="nav-item"><a href="#experience" class="nav-link">EXPERIENCE</a></li>
-          <li class="nav-item"><a href="#motif-journey" class="nav-link">JOURNEY</a></li>
+          <li class="nav-item" id="nav-item-journey"><a href="#motif-journey" class="nav-link" id="nav-journey-link">JOURNEY</a></li>
         </ul>
       </nav>
 
@@ -116,8 +116,7 @@
               class="kr" id="drawer-kids-kr">키즈 쿠키 체험</span></a></li>
         <li><a href="#experience" class="drawer-link"><span class="en">EXPERIENCE</span><span class="kr">테이스팅
               페어링</span></a></li>
-        <li><a href="#motif-journey" class="drawer-link"><span class="en">JOURNEY</span><span class="kr">지역 모티브
-              탐방</span></a></li>
+        <li id="drawer-item-journey"><a href="#motif-journey" class="drawer-link"><span class="en" id="drawer-journey-en">JOURNEY</span><span class="kr" id="drawer-journey-kr">지역 모티브 탐방</span></a></li>
       </ul>
       <div class="drawer-footer">
         <p class="drawer-notice">그랜드 조선 객실 웰컴기프트 가이드</p>
@@ -788,18 +787,6 @@
         
         <!-- ==================== BUSAN MOTIF PANEL ==================== -->
         <div id="journey-panel-busan" class="journey-panel active" role="tabpanel" aria-labelledby="journey-tab-busan" >
-          <!-- Hotel Departure Header (josunhotel.com location header) -->
-          <div class="josun-hotel-origin-banner">
-            <div class="origin-hotel-brand">
-              <span class="hotel-type-badge">HOTEL LOCATION & MOTIF JOURNEY</span>
-              <h3 class="hotel-title">그랜드 조선 부산</h3>
-              <p class="hotel-info-line">
-                <span class="info-addr">주소: 부산광역시 해운대구 해운대해변로 292</span>
-                <span class="vBar"><span class="info-tel">대표전화: 051-922-5000</span></span>
-              </p>
-            </div>
-          </div>
-
           <!-- Slider Container -->
           <div class="josun-motif-slider" id="busan-motif-slider">
             <!-- Slider Navigation: Tabs & Arrows & Counter -->
@@ -999,7 +986,7 @@
                 <!-- Top Area (josunhotel.com style) -->
                 <div class="topArea">
                   <div class="topInner">
-                    <h3 class="titDep1">Cheongsapo Port & Lighthouse</h3>
+                    <h3 class="titDep1">Cheongsapo Port <span class="amp-char">&amp;</span> Lighthouse</h3>
                     <div class="pageGuide">
                       <p class="txt">
                         <span class="motif-badge-inline">청사포 등대 쿠키 모티브</span>
@@ -1407,7 +1394,7 @@
                 <!-- Top Area (josunhotel.com style) -->
                 <div class="topArea">
                   <div class="topInner">
-                    <h3 class="titDep1">Haeundae Beach & Songnim Park</h3>
+                    <h3 class="titDep1">Haeundae Beach <span class="amp-char">&amp;</span> Songnim Park</h3>
                     <div class="pageGuide">
                       <p class="txt">
                         <span class="motif-badge-inline">해운대 갈매기 & 조개 모티브</span>
@@ -1535,22 +1522,22 @@
               </div>
             </div>
           </div>
+
+          <!-- Hotel Departure Info (Positioned under Concierge Tip) -->
+          <div class="josun-hotel-origin-banner">
+            <div class="origin-hotel-brand">
+              <span class="hotel-type-badge">HOTEL LOCATION & MOTIF JOURNEY</span>
+              <h3 class="hotel-title">그랜드 조선 부산</h3>
+              <p class="hotel-info-line">
+                <span class="info-addr">주소: 부산광역시 해운대구 해운대해변로 292</span>
+                <span class="vBar"><span class="info-tel">대표전화: 051-922-5000</span></span>
+              </p>
+            </div>
+          </div>
         </div>
         
         <!-- ==================== JEJU MOTIF PANEL ==================== -->
         <div id="journey-panel-jeju" class="journey-panel " role="tabpanel" aria-labelledby="journey-tab-jeju" hidden>
-          <!-- Hotel Departure Header (josunhotel.com location header) -->
-          <div class="josun-hotel-origin-banner">
-            <div class="origin-hotel-brand">
-              <span class="hotel-type-badge">HOTEL LOCATION & MOTIF JOURNEY</span>
-              <h3 class="hotel-title">그랜드 조선 제주</h3>
-              <p class="hotel-info-line">
-                <span class="info-addr">주소: 제주특별자치도 서귀포시 중문관광로 72번길 60</span>
-                <span class="vBar"><span class="info-tel">대표전화: 064-738-6600</span></span>
-              </p>
-            </div>
-          </div>
-
           <!-- Slider Container -->
           <div class="josun-motif-slider" id="jeju-motif-slider">
             <!-- Slider Navigation: Tabs & Arrows & Counter -->
@@ -1881,7 +1868,7 @@
                 <!-- Top Area (josunhotel.com style) -->
                 <div class="topArea">
                   <div class="topInner">
-                    <h3 class="titDep1">Citrus Museum & Hyodon Village</h3>
+                    <h3 class="titDep1">Citrus Museum <span class="amp-char">&amp;</span> Hyodon Village</h3>
                     <div class="pageGuide">
                       <p class="txt">
                         <span class="motif-badge-inline">제주 감귤 쿠키 모티브</span>
@@ -2555,7 +2542,7 @@
               <li id="footer-nav-collections"><a href="#collections">컬렉션 소개</a></li>
               <li id="footer-nav-kids"><a href="#kids">키즈 어드벤처</a></li>
               <li><a href="#experience">페어링 가이드</a></li>
-              <li><a href="#motif-journey">모티브 탐방 안내</a></li>
+              <li id="footer-nav-journey"><a href="#motif-journey" id="footer-journey-link">모티브 탐방 안내</a></li>
             </ul>
           </div>
           <div class="footer-col">

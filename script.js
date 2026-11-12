@@ -158,11 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (drawerClose) drawerClose.addEventListener('click', closeDrawer);
   if (backdrop) backdrop.addEventListener('click', closeDrawer);
 
-  drawerLinks.forEach(link => {
-    link.addEventListener('click', () => {
-      closeDrawer();
-    });
-  });
+  // Drawer links handled by Mobile Section Router below
 
   // =========================================================================
   // 4. URL Query Parameter Controller (3 Room Tiers: Busan Suite, Jeju Suite, Kids)
@@ -324,6 +320,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const footerJejuBtn = document.getElementById('footer-brochure-jeju');
     const footerKidsBtn = document.getElementById('footer-brochure-kids');
     const welcomeTag = document.querySelector('.welcome-tag');
+    const drawerJourneyEn = document.getElementById('drawer-journey-en');
+    const drawerJourneyKr = document.getElementById('drawer-journey-kr');
+    const navJourneyLink = document.getElementById('nav-journey-link');
+    const footerJourneyLink = document.getElementById('footer-journey-link');
 
     // -----------------------------------------------------------------------
     // 예외 케이스: 유효하지 않은 접속 (QR 안내 화면 표출)
@@ -408,7 +408,15 @@ document.addEventListener('DOMContentLoaded', () => {
         drawerQuickRoom.innerHTML = `${data.roomNameKr} (${data.countText}) 바로가기 &rarr;`;
       }
       if (drawerCollectionsKr) drawerCollectionsKr.textContent = '키즈룸 웰컴기프트';
-      if (drawerKidsKr) drawerKidsKr.textContent = '키즈 쿠키 체험 &amp; 캐릭터';
+      if (drawerKidsKr) drawerKidsKr.textContent = '키즈 쿠키 체험';
+      if (drawerJourneyEn) drawerJourneyEn.textContent = 'JOURNEY';
+      if (drawerJourneyKr) drawerJourneyKr.textContent = '지역 모티브 탐방';
+      if (navJourneyLink) navJourneyLink.textContent = 'JOURNEY';
+      if (footerJourneyLink) footerJourneyLink.textContent = '모티브 탐방 안내';
+      if (drawerJourneyEn) drawerJourneyEn.textContent = 'CHARACTERS';
+      if (drawerJourneyKr) drawerJourneyKr.textContent = '캐릭터 소개';
+      if (navJourneyLink) navJourneyLink.textContent = 'CHARACTERS';
+      if (footerJourneyLink) footerJourneyLink.textContent = '캐릭터 소개 안내';
 
       // 섹션 전환: 컬렉션 숨김, 키즈 표시
       if (collectionsSection) {
@@ -501,6 +509,10 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       if (drawerCollectionsKr) drawerCollectionsKr.textContent = `부산 컬렉션 (${data.roomNameKr})`;
       if (drawerKidsKr) drawerKidsKr.textContent = '키즈 쿠키 체험';
+      if (drawerJourneyEn) drawerJourneyEn.textContent = 'JOURNEY';
+      if (drawerJourneyKr) drawerJourneyKr.textContent = '지역 모티브 탐방';
+      if (navJourneyLink) navJourneyLink.textContent = 'JOURNEY';
+      if (footerJourneyLink) footerJourneyLink.textContent = '모티브 탐방 안내';
 
       // 섹션 전환: 컬렉션 표시, 키즈 숨김
       if (kidsSection) {
@@ -1345,4 +1357,230 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   window.addEventListener('scroll', updateScrollSpy, { passive: true });
+
+  // =========================================================================
+  // Mobile Single-Section View Controller (App-Style Routing)
+  // [요구사항: 모바일로 웹페이지 접속 시 [섹션 1]만 보이고 우측 상단 메뉴 클릭 후 개별 섹션 클릭 시 해당 섹션 페이지로 이동]
+  // [스크롤 최하단 튐 버그 방지: 모바일 브라우저 주소창/툴바 토글로 인한 resize 시 스크롤 리셋 원천 차단]
+  // =========================================================================
+  const MOBILE_SECTIONS = ['hero', 'story', 'collections', 'kids', 'experience', 'motif-journey'];
+
+  function isMobileViewport() {
+    return window.innerWidth <= 768;
+  }
+
+  function setMobileActiveSection(targetSectionId, options = {}) {
+    const {
+      updateUrl = true,
+      smoothScroll = false,
+      resetScroll = true,
+      forceScrollTop = false
+    } = options;
+
+    const isMobile = isMobileViewport();
+
+    if (!isMobile) {
+      document.body.classList.remove('mobile-section-mode', 'mobile-hero-active');
+      MOBILE_SECTIONS.forEach(id => {
+        const sec = document.getElementById(id);
+        if (sec) sec.classList.remove('mobile-active-section');
+      });
+      return;
+    }
+
+    const currentMode = typeof getMode === 'function' ? getMode() : { mode: 'busan' };
+    let resolvedId = targetSectionId ? String(targetSectionId).replace(/^#/, '') : 'hero';
+
+    if (currentMode.mode === 'kids' && resolvedId === 'collections') {
+      resolvedId = 'kids';
+    } else if (currentMode.mode !== 'kids' && resolvedId === 'kids') {
+      resolvedId = 'collections';
+    }
+
+    if (!MOBILE_SECTIONS.includes(resolvedId)) {
+      resolvedId = 'hero';
+    }
+
+    // 현재 활성화된 섹션 검사 (섹션 변경 여부 확인)
+    const currentActiveSec = document.querySelector('section.mobile-active-section');
+    const currentActiveId = currentActiveSec ? currentActiveSec.id : null;
+    const isSectionChanging = currentActiveId !== resolvedId;
+
+    document.body.classList.add('mobile-section-mode');
+    if (resolvedId === 'hero') {
+      document.body.classList.add('mobile-hero-active');
+      document.documentElement.classList.add('mobile-hero-lock');
+    } else {
+      document.body.classList.remove('mobile-hero-active');
+      document.documentElement.classList.remove('mobile-hero-lock');
+    }
+
+    MOBILE_SECTIONS.forEach(id => {
+      const sec = document.getElementById(id);
+      if (!sec) return;
+      if (id === resolvedId) {
+        sec.classList.add('mobile-active-section');
+        sec.removeAttribute('hidden');
+      } else {
+        sec.classList.remove('mobile-active-section');
+      }
+    });
+
+    // 섹션이 '실제로 변경'되었거나 명시적으로 forceScrollTop이 요청된 경우에만 최상단으로 스크롤!
+    // 동일 섹션 내에서의 툴바 토글/리사이즈/최하단 도달 시에는 현재 스크롤 위치를 절대 건드리지 않음!
+    if ((isSectionChanging && resetScroll) || forceScrollTop) {
+      window.scrollTo({
+        top: 0,
+        behavior: smoothScroll ? 'smooth' : 'instant'
+      });
+    }
+
+    if (updateUrl) {
+      const newHash = resolvedId === 'hero' ? '' : '#' + resolvedId;
+      const newUrl = window.location.pathname + window.location.search + newHash;
+      try {
+        history.replaceState(null, document.title, newUrl);
+      } catch (err) {}
+    }
+  }
+
+  function initMobileSectionRouter() {
+    // 1. Initial State: 모바일 접속 시 무조건 [섹션 1] (Hero)만 표시
+    if (isMobileViewport()) {
+      const hash = window.location.hash ? window.location.hash.replace(/^#/, '') : '';
+      if (hash && MOBILE_SECTIONS.includes(hash)) {
+        setMobileActiveSection(hash, { updateUrl: false, resetScroll: true });
+      } else {
+        setMobileActiveSection('hero', { updateUrl: false, resetScroll: true });
+      }
+    }
+
+    // 2. 드로어 메뉴 링크 클릭 시 개별 섹션 페이지로 이동
+    const drawerLinks = document.querySelectorAll('.drawer-link');
+    drawerLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        closeDrawer();
+        if (!isMobileViewport()) return;
+
+        const href = link.getAttribute('href');
+        if (href && href.startsWith('#')) {
+          e.preventDefault();
+          const targetId = href.substring(1);
+          setTimeout(() => {
+            setMobileActiveSection(targetId, { updateUrl: true, resetScroll: true, forceScrollTop: true });
+          }, 120);
+        }
+      });
+    });
+
+    // 3. 드로어 상단의 MY ROOM GIFT 카드 클릭 시 이동
+    const drawerQuickBtn = document.getElementById('drawer-quick-btn');
+    if (drawerQuickBtn) {
+      drawerQuickBtn.addEventListener('click', (e) => {
+        closeDrawer();
+        if (!isMobileViewport()) return;
+        e.preventDefault();
+        const currentMode = typeof getMode === 'function' ? getMode() : { mode: 'busan' };
+        const targetId = currentMode.mode === 'kids' ? 'kids' : 'collections';
+        setTimeout(() => {
+          setMobileActiveSection(targetId, { updateUrl: true, resetScroll: true, forceScrollTop: true });
+        }, 120);
+      });
+    }
+
+    // 4. 로고 클릭 시 Hero([섹션 1])로 이동
+    const brandLogos = document.querySelectorAll('.brand-logo, .header-brand a');
+    brandLogos.forEach(logo => {
+      logo.addEventListener('click', (e) => {
+        if (!isMobileViewport()) return;
+        e.preventDefault();
+        closeDrawer();
+        setMobileActiveSection('hero', { updateUrl: true, resetScroll: true, forceScrollTop: true });
+      });
+    });
+
+    // 5. Hero CTA 버튼 클릭 시 컬렉션 섹션으로 이동
+    const heroBtnExplore = document.getElementById('hero-btn-explore');
+    if (heroBtnExplore) {
+      heroBtnExplore.addEventListener('click', (e) => {
+        if (!isMobileViewport()) return;
+        e.preventDefault();
+        const currentMode = typeof getMode === 'function' ? getMode() : { mode: 'busan' };
+        const targetId = currentMode.mode === 'kids' ? 'kids' : 'collections';
+        setMobileActiveSection(targetId, { updateUrl: true, resetScroll: true, forceScrollTop: true });
+      });
+    }
+
+    // 6. 사이트 푸터의 내부 앵커 링크 클릭 시 이동
+    document.querySelectorAll('.site-footer a[href^="#"]').forEach(flink => {
+      flink.addEventListener('click', (e) => {
+        if (!isMobileViewport()) return;
+        const href = flink.getAttribute('href');
+        if (href && href.startsWith('#')) {
+          e.preventDefault();
+          const targetId = href.substring(1);
+          setMobileActiveSection(targetId, { updateUrl: true, resetScroll: true, forceScrollTop: true });
+        }
+      });
+    });
+
+    // 7. 브라우저 뒤로 가기 / 앞으로 가기 (popstate)
+    window.addEventListener('popstate', () => {
+      if (!isMobileViewport()) return;
+      const hash = window.location.hash ? window.location.hash.replace(/^#/, '') : 'hero';
+      setMobileActiveSection(hash, { updateUrl: false, resetScroll: true });
+    });
+
+    // 8. 뷰포트 크기 변경(resize) 시 모드 자동 보정
+    // [중요] 모바일 브라우저 스크롤 시 상하단 주소창/하단바 토글로 인한 순수 높이 변화는 100% 무시하여 스크롤 튐 방지
+    let lastViewportWidth = window.innerWidth;
+    let resizeTimer = null;
+    window.addEventListener('resize', () => {
+      // 너비(width) 변화가 없다면 스크롤 도중 주소창 변화이므로 아무 작업도 하지 않음!
+      if (window.innerWidth === lastViewportWidth) {
+        return;
+      }
+      lastViewportWidth = window.innerWidth;
+
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        if (!isMobileViewport()) {
+          // 데스크톱 화면으로 전환
+          document.documentElement.classList.remove('mobile-hero-lock');
+          document.body.classList.remove('mobile-section-mode', 'mobile-hero-active');
+          MOBILE_SECTIONS.forEach(id => {
+            const sec = document.getElementById(id);
+            if (sec) sec.classList.remove('mobile-active-section');
+          });
+        } else {
+          // 모바일 화면 내에서 화면 회전 등 가로 너비 변경 시 (스크롤 위치 보존: resetScroll: false)
+          const activeSec = document.querySelector('section.mobile-active-section');
+          const curId = activeSec ? activeSec.id : (window.location.hash ? window.location.hash.replace(/^#/, '') : 'hero');
+          setMobileActiveSection(curId, { updateUrl: false, resetScroll: false });
+        }
+      }, 150);
+    });
+  }
+
+  // [섹션 1] Hero 초기 단독 뷰에서 상하 스크롤 및 터치 드래그 완전 차단
+  window.addEventListener('touchmove', (e) => {
+    if (isMobileViewport() && document.body.classList.contains('mobile-hero-active')) {
+      const drawer = document.getElementById('mobile-drawer');
+      if (!drawer || !drawer.classList.contains('open')) {
+        e.preventDefault();
+      }
+    }
+  }, { passive: false });
+
+  window.addEventListener('wheel', (e) => {
+    if (isMobileViewport() && document.body.classList.contains('mobile-hero-active')) {
+      const drawer = document.getElementById('mobile-drawer');
+      if (!drawer || !drawer.classList.contains('open')) {
+        e.preventDefault();
+      }
+    }
+  }, { passive: false });
+
+  // Initialize Mobile Section Router
+  initMobileSectionRouter();
 });

@@ -1,3 +1,20 @@
+
+/* ==================== AMPERSAND SERIF FALLBACK ==================== */
+@font-face {
+  font-family: 'AmpersandSerif';
+  src: local('Georgia'), local('Times New Roman'), local('Baskerville');
+  unicode-range: U+0026;
+}
+
+.amp-char {
+  font-family: Georgia, 'Times New Roman', serif !important;
+  font-weight: 400 !important;
+  font-style: normal !important;
+  display: inline-block;
+  padding: 0 0.05em;
+  vertical-align: baseline;
+}
+
 .hidden { display: none !important; }
 /* ==========================================================================
    JOSUN ÉCLAT (조선 에끌라) Design System & Stylesheet
@@ -1661,7 +1678,7 @@ section[id] {
 }
 
 .josun-location-wrap .titDep1 {
-  font-family: var(--font-serif-en, 'Playfair Display', Georgia, serif);
+  font-family: 'AmpersandSerif', var(--font-serif-en, 'Playfair Display', Georgia, serif);
   font-size: clamp(34px, 4.5vw, 52px);
   font-weight: 500;
   color: #111111;
@@ -1687,7 +1704,8 @@ section[id] {
   border-top: 2px solid #111111;
   border-bottom: 1px solid #e0e0e0;
   padding: 24px 20px;
-  margin-bottom: 35px;
+  margin-top: 40px;
+  margin-bottom: 0;
   text-align: center;
   background-color: #faf9f7;
 }
@@ -1753,6 +1771,11 @@ section[id] {
   display: flex;
   gap: 0;
   overflow-x: auto;
+  overflow-y: hidden !important;
+  overscroll-behavior-y: none !important;
+  overscroll-behavior-x: contain;
+  touch-action: pan-x !important;
+  -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
@@ -1796,7 +1819,7 @@ section[id] {
 }
 
 .josun-tab-item .tab-num {
-  font-family: var(--font-serif-en, 'Playfair Display', serif);
+  font-family: 'AmpersandSerif', var(--font-serif-en, 'Playfair Display', serif);
   font-size: 13px;
   margin-right: 6px;
   color: #999999;
@@ -3549,12 +3572,18 @@ section[id] {
   }
   .josun-tabs-track {
     width: 100%;
-    overflow-x: auto;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    overscroll-behavior-y: none !important;
+    overscroll-behavior-x: contain;
+    touch-action: pan-x !important;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     white-space: nowrap;
     display: flex;
     gap: 4px;
+    height: 52px;
+    align-items: center;
   }
   .josun-tab-item {
     padding: 12px 14px;
@@ -3563,6 +3592,8 @@ section[id] {
     flex-shrink: 0;
     display: inline-flex;
     align-items: center;
+    touch-action: pan-x !important;
+    user-select: none;
   }
   .josun-slider-controls {
     width: 100%;
@@ -3862,7 +3893,7 @@ section[id] {
   padding: 20px 0 36px;
 }
 #motif-journey .titDep1 {
-  font-family: var(--font-serif-en), "Playfair Display", Georgia, serif !important;
+  font-family: 'AmpersandSerif', var(--font-serif-en), "Playfair Display", Georgia, serif !important;
   font-size: clamp(2rem, 3.6vw, 2.75rem);
   font-weight: 500;
   color: #242824;
@@ -4273,5 +4304,91 @@ section[id] {
     line-height: 1.5;
     text-align: center;
     word-break: keep-all;
+  }
+}
+
+
+/* ==================== MOBILE SINGLE SECTION VIEW MODE ==================== */
+@media screen and (max-width: 768px) {
+  /* In mobile section mode, hide all sections except the active one */
+  body.mobile-section-mode {
+    min-height: 100vh;
+  }
+
+  body.mobile-section-mode main#main-content > section[id]:not(.mobile-active-section),
+  body.mobile-section-mode #qr-guidance-section {
+    display: none !important;
+  }
+
+  /* Make sure the active section is visible */
+  body.mobile-section-mode main#main-content > section.mobile-active-section {
+    display: block !important;
+    animation: mobileSectionFadeIn 0.35s ease-out;
+  }
+
+  /* [섹션 1] Hero 초기 단독 뷰: 상하 스크롤 완전 차단 (앱 랜딩 뷰) */
+  html.mobile-hero-lock,
+  body.mobile-section-mode.mobile-hero-active {
+    height: 100% !important;
+    height: 100dvh !important;
+    max-height: 100dvh !important;
+    overflow: hidden !important;
+    overscroll-behavior: none !important;
+    touch-action: none !important;
+    position: fixed !important;
+    width: 100% !important;
+    left: 0 !important;
+    top: 0 !important;
+  }
+
+  body.mobile-section-mode.mobile-hero-active main#main-content {
+    height: 100% !important;
+    height: 100dvh !important;
+    max-height: 100dvh !important;
+    overflow: hidden !important;
+    touch-action: none !important;
+  }
+
+  body.mobile-section-mode.mobile-hero-active #hero.mobile-active-section {
+    display: flex !important;
+    height: 100% !important;
+    height: 100dvh !important;
+    min-height: 100% !important;
+    max-height: 100dvh !important;
+    overflow: hidden !important;
+    touch-action: none !important;
+    padding-top: 0 !important;
+  }
+
+  /* 헤더, 햄버거 메뉴, 히어로 버튼 등 인터랙션 요소는 터치 허용 */
+  body.mobile-section-mode.mobile-hero-active .site-header,
+  body.mobile-section-mode.mobile-hero-active .site-header *,
+  body.mobile-section-mode.mobile-hero-active #hero-btn-explore,
+  body.mobile-section-mode.mobile-hero-active .mobile-drawer,
+  body.mobile-section-mode.mobile-hero-active .mobile-drawer *,
+  body.mobile-section-mode.mobile-hero-active .drawer-backdrop {
+    touch-action: auto !important;
+    pointer-events: auto !important;
+  }
+
+  /* When on Section 1 (Hero), hide the site footer for full-screen immersive view */
+  body.mobile-section-mode.mobile-hero-active .site-footer {
+    display: none !important;
+  }
+
+  /* For non-hero active sections, add clean top spacing below fixed header */
+  body.mobile-section-mode:not(.mobile-hero-active) main#main-content > section.mobile-active-section {
+    padding-top: calc(var(--header-height, 70px) + 20px) !important;
+  }
+}
+
+@keyframes mobileSectionFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
