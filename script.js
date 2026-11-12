@@ -377,9 +377,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (footerJejuBtn) footerJejuBtn.style.display = 'none';
       if (footerKidsBtn) footerKidsBtn.style.display = 'none';
 
-      const drawerQuickCard = document.getElementById('drawer-quick-card');
-      if (drawerQuickCard) drawerQuickCard.style.display = 'none';
-
+      
       return;
     }
 
@@ -397,9 +395,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const heroHotelName = document.getElementById('hero-hotel-name');
     const heroBtnExplore = document.getElementById('hero-btn-explore');
-    const drawerQuickCard = document.getElementById('drawer-quick-card');
-    const drawerQuickHotel = document.getElementById('drawer-quick-hotel');
-    const drawerQuickRoom = document.getElementById('drawer-quick-room');
     const drawerCollectionsKr = document.getElementById('drawer-collections-kr');
     const drawerKidsKr = document.getElementById('drawer-kids-kr');
 
@@ -418,17 +413,9 @@ document.addEventListener('DOMContentLoaded', () => {
         heroBtnExplore.textContent = '키즈 웰컴기프트 보기';
       }
 
-      if (drawerQuickCard) drawerQuickCard.style.display = '';
-      if (drawerQuickHotel) drawerQuickHotel.textContent = data.nameEn;
-      if (drawerQuickRoom) {
-        drawerQuickRoom.innerHTML = `${data.roomNameKr} (${data.countText}) 바로가기 &rarr;`;
-      }
+
       if (drawerCollectionsKr) drawerCollectionsKr.textContent = '키즈룸 웰컴기프트';
       if (drawerKidsKr) drawerKidsKr.textContent = '키즈 쿠키 체험';
-      if (drawerJourneyEn) drawerJourneyEn.textContent = 'JOURNEY';
-      if (drawerJourneyKr) drawerJourneyKr.textContent = '지역 모티브 탐방';
-      if (navJourneyLink) navJourneyLink.textContent = 'JOURNEY';
-      if (footerJourneyLink) footerJourneyLink.textContent = '모티브 탐방 안내';
       if (drawerJourneyEn) drawerJourneyEn.textContent = 'CHARACTERS';
       if (drawerJourneyKr) drawerJourneyKr.textContent = '캐릭터 소개';
       if (navJourneyLink) navJourneyLink.textContent = 'CHARACTERS';
@@ -518,11 +505,7 @@ document.addEventListener('DOMContentLoaded', () => {
         heroBtnExplore.textContent = '컬렉션 탐색하기';
       }
 
-      if (drawerQuickCard) drawerQuickCard.style.display = '';
-      if (drawerQuickHotel) drawerQuickHotel.textContent = ECLAT_CONTENT.busan.nameEn;
-      if (drawerQuickRoom) {
-        drawerQuickRoom.innerHTML = `${data.roomNameKr} (${data.countText}) 바로가기 &rarr;`;
-      }
+
       if (drawerCollectionsKr) drawerCollectionsKr.textContent = `부산 컬렉션 (${data.roomNameKr})`;
       if (drawerKidsKr) drawerKidsKr.textContent = '키즈 쿠키 체험';
       if (drawerJourneyEn) drawerJourneyEn.textContent = 'JOURNEY';
@@ -635,11 +618,7 @@ document.addEventListener('DOMContentLoaded', () => {
         heroBtnExplore.textContent = '컬렉션 탐색하기';
       }
 
-      if (drawerQuickCard) drawerQuickCard.style.display = '';
-      if (drawerQuickHotel) drawerQuickHotel.textContent = ECLAT_CONTENT.jeju.nameEn;
-      if (drawerQuickRoom) {
-        drawerQuickRoom.innerHTML = `${data.roomNameKr} (${data.countText}) 바로가기 &rarr;`;
-      }
+
       if (drawerCollectionsKr) drawerCollectionsKr.textContent = `제주 컬렉션 (${data.roomNameKr})`;
       if (drawerKidsKr) drawerKidsKr.textContent = '키즈 쿠키 체험';
 
@@ -1095,19 +1074,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // =========================================================================
   // Mobile Interactive UX Controllers (Story, Cookie More, Kids Toggle, Quick Pill)
   // =========================================================================
-  // A. Drawer Quick Pill Click
-  const drawerQuickBtn = document.getElementById('drawer-quick-btn');
-  if (drawerQuickBtn) {
-    drawerQuickBtn.addEventListener('click', () => {
-      closeDrawer();
-      const { mode } = getMode();
-      const targetId = mode === 'kids' ? 'kids' : 'collections';
-      const targetEl = document.getElementById(targetId);
-      if (targetEl) {
-        targetEl.scrollIntoView({ behavior: 'smooth' });
-      }
-    });
-  }
+  // A. Drawer Quick Pill Click removed
 
   // B. Brand Story Mobile Collapse Toggle
   // 3 Core Pillars Mobile Accordion Toggle ('∨' Button)
@@ -1494,20 +1461,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    // 3. 드로어 상단의 MY ROOM GIFT 카드 클릭 시 이동
-    const drawerQuickBtn = document.getElementById('drawer-quick-btn');
-    if (drawerQuickBtn) {
-      drawerQuickBtn.addEventListener('click', (e) => {
-        closeDrawer();
-        if (!isMobileViewport()) return;
-        e.preventDefault();
-        const currentMode = typeof getMode === 'function' ? getMode() : { mode: 'busan' };
-        const targetId = currentMode.mode === 'kids' ? 'kids' : 'collections';
-        setTimeout(() => {
-          setMobileActiveSection(targetId, { updateUrl: true, resetScroll: true, forceScrollTop: true });
-        }, 120);
-      });
-    }
+    // 3. MY ROOM GIFT card removed
 
     // 4. 로고 클릭 시 Hero([섹션 1])로 이동
     const brandLogos = document.querySelectorAll('.brand-logo, .header-brand a');
