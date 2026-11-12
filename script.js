@@ -190,23 +190,119 @@ document.addEventListener('DOMContentLoaded', () => {
     return { mode: null, hotel: null, room: null, valid: false };
   }
 
+  // =========================================================================
+  // iPhone / iOS WebKit Video Autoplay & Smooth Loop Engine
+  // =========================================================================
   function updateHeroBgVideo(videoPath) {
     const video = document.getElementById('hero-bg-video');
     if (!video) return;
-    const source = video.querySelector('source');
-    const currentSrc = source ? source.getAttribute('src') : video.getAttribute('src');
 
-    if (currentSrc !== videoPath) {
+    // 1. Force iOS WebKit autoplay prerequisites on DOM properties & attributes
+    video.muted = true;
+    video.defaultMuted = true;
+    video.playsInline = true;
+    video.setAttribute('muted', '');
+    video.setAttribute('playsinline', '');
+    video.setAttribute('webkit-playsinline', '');
+
+    const source = video.querySelector('source');
+    const currentSrc = source ? source.getAttribute('src') : (video.getAttribute('src') || '');
+    
+    // Normalize path comparison (e.g. relative vs absolute)
+    const isDifferent = currentSrc !== videoPath && !currentSrc.endsWith(videoPath.replace(/^\.\//, ''));
+
+    const attemptPlay = () => {
+      video.muted = true;
+      video.defaultMuted = true;
+      video.playsInline = true;
+      if (video.paused) {
+        const playPromise = video.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(() => {
+            // Autoplay deferred (e.g. iOS Low Power Mode); watchdog will play on first interaction
+          });
+        }
+      }
+    };
+
+    if (isDifferent) {
       if (source) {
         source.setAttribute('src', videoPath);
       }
       video.src = videoPath;
       video.load();
-      const playPromise = video.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(() => {});
-      }
+
+      // In iOS Safari, wait for loadeddata / canplay before calling play()
+      video.addEventListener('loadeddata', attemptPlay, { once: true });
+      video.addEventListener('canplay', attemptPlay, { once: true });
     }
+
+    // Always attempt play immediately
+    attemptPlay();
+
+    if (video.readyState >= 2) {
+      attemptPlay();
+    }
+  }
+
+  // iOS / Mobile Video Autoplay & Low Power Mode Fallback Watchdog
+  function initVideoAutoplayWatchdog() {
+    const video = document.getElementById('hero-bg-video');
+    if (!video) return;
+
+    const playVideo = () => {
+      if (video.paused) {
+        video.muted = true;
+        video.defaultMuted = true;
+        video.playsInline = true;
+        video.setAttribute('muted', '');
+        video.setAttribute('playsinline', '');
+        video.setAttribute('webkit-playsinline', '');
+        const p = video.play();
+        if (p !== undefined) {
+          p.catch(() => {});
+        }
+      }
+    };
+
+    // 1. Initial attempt
+    playVideo();
+
+    // 2. User interaction fallback (covers iOS Low Power Mode and strict WebKit autoplay policies)
+    const interactionEvents = ['touchstart', 'touchend', 'click', 'scroll', 'pointerdown'];
+    const onUserInteraction = () => {
+      playVideo();
+      if (!video.paused) {
+        interactionEvents.forEach(evt => {
+          window.removeEventListener(evt, onUserInteraction);
+          document.removeEventListener(evt, onUserInteraction);
+        });
+      }
+    };
+
+    interactionEvents.forEach(evt => {
+      window.addEventListener(evt, onUserInteraction, { passive: true });
+      document.addEventListener(evt, onUserInteraction, { passive: true });
+    });
+
+    // 3. Tab visibility & BFCache page restoration handlers
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden && video.paused) {
+        playVideo();
+      }
+    });
+    window.addEventListener('pageshow', () => {
+      if (video.paused) {
+        playVideo();
+      }
+    });
+
+    // 4. Background pause recovery
+    video.addEventListener('pause', () => {
+      if (!document.hidden) {
+        setTimeout(playVideo, 150);
+      }
+    });
   }
 
   function renderPage() {
@@ -966,6 +1062,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 초기 렌더링 실행
   renderPage();
+  initVideoAutoplayWatchdog();
 
   // =========================================================================
   // Mobile Interactive UX Controllers (Story, Cookie More, Kids Toggle, Quick Pill)

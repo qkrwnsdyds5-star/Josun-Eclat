@@ -650,7 +650,7 @@ ul, ol {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: -2;
+  z-index: 0;
 }
 .hero-bg-img {
   width: 100%;
@@ -674,7 +674,7 @@ ul, ol {
   height: 100%;
   background: transparent; /* 별도 명도 조정 없는 원본 영상 투과 */
   pointer-events: none;
-  z-index: -1;
+  z-index: 1;
 }
 
 .hero-content {
@@ -3786,7 +3786,7 @@ section[id] {
   object-position: center;
   filter: none !important; /* 별도 명도 조정 없는 원본 영상 노출 */
   pointer-events: none;
-  z-index: -2;
+  z-index: 0;
 }
 
 /* ==========================================================================

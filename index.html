@@ -133,9 +133,36 @@
     <!-- ==================== 2. HERO SECTION ==================== -->
     <section id="hero" class="hero-section" aria-label="조선 에끌라 환영 섹션">
       <div class="hero-bg-wrapper">
-        <video class="hero-bg-video" id="hero-bg-video" autoplay loop muted playsinline preload="auto">
+        <video class="hero-bg-video" id="hero-bg-video" autoplay loop muted defaultMuted playsinline webkit-playsinline preload="auto" disablepictureinpicture disableremoteplayback>
           <source src="./assets/josun_eclat_webpage_background_video.mp4" type="video/mp4">
         </video>
+        <script>
+          (function() {
+            var v = document.getElementById('hero-bg-video');
+            if (!v) return;
+            v.muted = true;
+            v.defaultMuted = true;
+            v.playsInline = true;
+            try {
+              var p = new URLSearchParams(window.location.search);
+              var room = p.get('room');
+              var hotel = p.get('hotel');
+              var targetSrc = './assets/josun_eclat_webpage_background_video.mp4';
+              if (room === 'kids') {
+                targetSrc = './assets/josun_eclat_kids_webpage_background_video.mp4';
+              } else if (hotel === 'jeju') {
+                targetSrc = './assets/josun_eclat_webpage_background_jeju.mp4';
+              }
+              var s = v.querySelector('source');
+              if (s && s.getAttribute('src') !== targetSrc) {
+                s.setAttribute('src', targetSrc);
+                v.src = targetSrc;
+              }
+            } catch (e) {}
+            var playPromise = v.play();
+            if (playPromise !== undefined) playPromise.catch(function(){});
+          })();
+        </script>
         <div class="hero-overlay"></div>
       </div>
 
