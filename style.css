@@ -1120,7 +1120,8 @@ ul, ol {
 /* Mobile Optimization - Desktop Viewport Defaults */
 .btn-story-toggle,
 .btn-cookie-more,
-.btn-kids-toggle {
+.btn-kids-toggle,
+.btn-pillars-toggle {
   display: none !important;
 }
 .story-collapse-wrapper {
@@ -3061,9 +3062,87 @@ section[id] {
     margin: 0 auto;
     display: block;
   }
+  /* 3 Core Pillars Mobile Accordion */
+  .pillars-accordion-wrapper {
+    margin-top: 14px;
+    width: 100%;
+  }
+  .btn-pillars-toggle {
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 52px;
+    padding: 12px 18px;
+    background-color: var(--color-bg-white);
+    border: 1px solid rgba(200, 169, 126, 0.45);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: var(--transition-fast);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  }
+  .btn-pillars-toggle:hover,
+  .btn-pillars-toggle:active {
+    background-color: rgba(200, 169, 126, 0.08);
+    border-color: var(--color-gold-metallic);
+  }
+  .pillars-toggle-label {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3px;
+    text-align: left;
+  }
+  .pillars-toggle-title {
+    font-family: var(--font-serif-kr, serif);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--color-heritage-green);
+    letter-spacing: -0.01em;
+  }
+  .pillars-toggle-sub {
+    font-family: var(--font-sans-en, sans-serif);
+    font-size: 0.6875rem;
+    letter-spacing: 0.1em;
+    color: var(--color-text-muted);
+  }
+  .pillars-toggle-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: rgba(200, 169, 126, 0.12);
+    border: 1px solid rgba(200, 169, 126, 0.35);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: var(--transition-fast);
+  }
+  .pillars-toggle-arrow {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-gold-metallic);
+    display: inline-block;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    line-height: 1;
+  }
+  .btn-pillars-toggle[aria-expanded="true"] .pillars-toggle-btn {
+    background-color: var(--color-heritage-green);
+    border-color: var(--color-heritage-green);
+  }
+  .btn-pillars-toggle[aria-expanded="true"] .pillars-toggle-arrow {
+    transform: rotate(180deg);
+    color: var(--color-text-white);
+  }
   .core-pillars {
+    display: none !important;
     grid-template-columns: 1fr;
     gap: 14px;
+    margin-top: 14px;
+  }
+  .core-pillars.expanded {
+    display: grid !important;
+    animation: panelFade 0.35s ease;
   }
   .pillar-card {
     padding: 18px 16px;

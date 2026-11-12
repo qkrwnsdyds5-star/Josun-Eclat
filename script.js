@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
       suite: {
         title: 'JOSUN ÉCLAT | 그랜드 조선 부산 스위트룸 웰컴기프트',
         tag: 'BUSAN SUITE',
-        subLead: 'GRAND JOSUN BUSAN • SUITE ROOM',
+        subLead: 'GRAND JOSUN BUSAN',
         roomNameKr: '스위트룸',
         roomNameEn: 'SUITE ROOM',
         countText: '6종 전체',
@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
       suite: {
         title: 'JOSUN ÉCLAT | 그랜드 조선 제주 스위트룸 웰컴기프트',
         tag: 'JEJU SUITE',
-        subLead: 'GRAND JOSUN JEJU • SUITE ROOM',
+        subLead: 'GRAND JOSUN JEJU',
         roomNameKr: '스위트룸',
         roomNameEn: 'SUITE ROOM',
         countText: '6종 전체',
@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
       regionKr: '키즈',
       title: 'JOSUN ÉCLAT | 그랜드 조선 키즈룸 웰컴기프트',
       tag: 'KIDS ADVENTURE',
-      subLead: 'GRAND JOSUN • KIDS ROOM',
+      subLead: 'GRAND JOSUN',
       roomNameKr: '키즈룸',
       roomNameEn: 'KIDS ROOM',
       countText: 'DIY 키트',
@@ -347,7 +347,12 @@ document.addEventListener('DOMContentLoaded', () => {
       if (kidsSubLead) kidsSubLead.textContent = data.subLead;
       if (kidsGuide) kidsGuide.textContent = data.guide;
       if (kidsVerifiedHotel) kidsVerifiedHotel.textContent = data.nameEn;
-      if (kidsVerifiedRoom) kidsVerifiedRoom.textContent = `${data.roomNameEn} (${data.countText})`;
+      const kidsVerifiedSep = document.querySelector('#kids-verified-banner .verified-sep');
+      if (kidsVerifiedSep) kidsVerifiedSep.style.display = 'none';
+      if (kidsVerifiedRoom) {
+        kidsVerifiedRoom.textContent = '';
+        kidsVerifiedRoom.style.display = 'none';
+      }
       if (kidsShowcaseTitle) kidsShowcaseTitle.innerHTML = data.intro.title;
       if (kidsShowcaseDesc) kidsShowcaseDesc.textContent = data.intro.desc;
       if (kidsWelcomeCardText) kidsWelcomeCardText.textContent = data.intro.welcomeCard;
@@ -430,7 +435,12 @@ document.addEventListener('DOMContentLoaded', () => {
       if (title) title.textContent = 'Busan Gift Collection';
       if (guide) guide.textContent = data.guide;
       if (verifiedHotel) verifiedHotel.textContent = ECLAT_CONTENT.busan.nameEn;
-      if (verifiedRoom) verifiedRoom.textContent = `${data.roomNameEn} (${data.countText})`;
+      const verifiedSep = document.querySelector('#collection-verified-banner .verified-sep');
+      if (verifiedSep) verifiedSep.style.display = 'none';
+      if (verifiedRoom) {
+        verifiedRoom.textContent = '';
+        verifiedRoom.style.display = 'none';
+      }
 
       // 패널 제어: 부산 표시, 제주 숨김
       const panelBusan = document.getElementById('panel-busan');
@@ -490,7 +500,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // CASE C: 제주 스위트룸 (Jeju Suite)
     // =======================================================================
     if (mode === 'jeju') {
-      updateHeroBgVideo('./assets/josun_eclat_webpage_background_video.mp4');
+      updateHeroBgVideo('./assets/josun_eclat_webpage_background_jeju.mp4');
       const data = ECLAT_CONTENT.jeju.suite;
       document.title = data.title;
       if (welcomeTag) welcomeTag.textContent = data.tag;
@@ -538,7 +548,12 @@ document.addEventListener('DOMContentLoaded', () => {
       if (title) title.textContent = 'Jeju Gift Collection';
       if (guide) guide.textContent = data.guide;
       if (verifiedHotel) verifiedHotel.textContent = ECLAT_CONTENT.jeju.nameEn;
-      if (verifiedRoom) verifiedRoom.textContent = `${data.roomNameEn} (${data.countText})`;
+      const jejuVerifiedSep = document.querySelector('#collection-verified-banner .verified-sep');
+      if (jejuVerifiedSep) jejuVerifiedSep.style.display = 'none';
+      if (verifiedRoom) {
+        verifiedRoom.textContent = '';
+        verifiedRoom.style.display = 'none';
+      }
 
       // 패널 제어: 제주 표시, 부산 숨김
       const panelBusan = document.getElementById('panel-busan');
@@ -970,6 +985,17 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // B. Brand Story Mobile Collapse Toggle
+  // 3 Core Pillars Mobile Accordion Toggle ('∨' Button)
+  const btnPillarsToggle = document.getElementById('btn-pillars-toggle');
+  const corePillars = document.getElementById('core-pillars');
+  if (btnPillarsToggle && corePillars) {
+    btnPillarsToggle.addEventListener('click', () => {
+      const isExpanded = corePillars.classList.toggle('expanded');
+      btnPillarsToggle.setAttribute('aria-expanded', String(isExpanded));
+      btnPillarsToggle.setAttribute('aria-label', isExpanded ? '3대 핵심 가치 카드 접기' : '3대 핵심 가치 카드 펼치기');
+    });
+  }
+
   const btnStoryToggle = document.getElementById('btn-story-toggle');
   const storyCollapse = document.getElementById('story-collapse');
   if (btnStoryToggle && storyCollapse) {

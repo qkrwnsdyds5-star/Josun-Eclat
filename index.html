@@ -199,8 +199,20 @@
           </div>
         </div>
 
-        <!-- 3 Core Pillars -->
-        <div class="core-pillars">
+        <!-- 3 Core Pillars (Mobile Collapsible with '∨' Button) -->
+        <div class="pillars-accordion-wrapper" id="pillars-accordion-wrapper">
+          <button type="button" class="btn-pillars-toggle" id="btn-pillars-toggle" aria-expanded="false"
+            aria-controls="core-pillars" aria-label="3대 핵심 가치 카드 펼치기">
+            <span class="pillars-toggle-label">
+              <span class="pillars-toggle-title">조선 에끌라 3대 핵심 가치</span>
+              <span class="pillars-toggle-sub">3 CORE PILLARS OF ÉCLAT</span>
+            </span>
+            <span class="pillars-toggle-btn" aria-hidden="true">
+              <span class="pillars-toggle-arrow">∨</span>
+            </span>
+          </button>
+
+          <div class="core-pillars" id="core-pillars">
           <div class="pillar-card">
             <div class="pillar-icon">
               <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
@@ -243,6 +255,7 @@
             <p class="pillar-desc">신세계푸드의 프리미엄 쇼트브레드와 딥 초콜릿 글레이징으로 여행의 시작부터 끝까지 깊은 여운을 선물합니다.</p>
           </div>
         </div>
+      </div>
       </div>
     </section>
 
@@ -311,8 +324,8 @@
             <div class="verified-pill">
               <span class="verified-icon" aria-hidden="true">✦</span>
               <span class="verified-hotel" id="verified-hotel">GRAND JOSUN BUSAN</span>
-              <span class="verified-sep">&bull;</span>
-              <span class="verified-room" id="verified-room">STANDARD ROOM (3종)</span>
+              <span class="verified-sep" style="display: none;">&bull;</span>
+              <span class="verified-room" id="verified-room" style="display: none;"></span>
             </div>
           </div>
         </div>
@@ -554,9 +567,9 @@
           <div class="collection-verified-banner" id="kids-verified-banner">
             <div class="verified-pill">
               <span class="verified-icon" aria-hidden="true">✦</span>
-              <span class="verified-hotel" id="kids-verified-hotel">GRAND JOSUN BUSAN</span>
-              <span class="verified-sep">&bull;</span>
-              <span class="verified-room" id="kids-verified-room">KIDS ROOM (DIY 키트)</span>
+              <span class="verified-hotel" id="kids-verified-hotel">GRAND JOSUN</span>
+              <span class="verified-sep" style="display: none;">&bull;</span>
+              <span class="verified-room" id="kids-verified-room" style="display: none;"></span>
             </div>
           </div>
         </div>
