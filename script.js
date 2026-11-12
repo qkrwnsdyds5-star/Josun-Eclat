@@ -118,6 +118,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function updateHeaderOnScroll() {
     if (!header) return;
+    const isMobile = typeof isMobileViewport === 'function' ? isMobileViewport() : (window.innerWidth <= 768);
+    const isHeroActive = document.body.classList.contains('mobile-hero-active');
+
+    if (isMobile) {
+      if (!isHeroActive) {
+        // 모바일에서 Hero 외 모든 섹션(화이트, 연한 주황빛 크림 #FAF8F4 등)은 항상 header-scrolled 적용 (블랙 로고/폰트/햄버거 바)
+        header.classList.add('header-scrolled');
+        return;
+      } else {
+        // Hero(섹션 1)에서는 어두운 비디오 배경에 맞춰 투명 헤더 + 화이트 로고 유지
+        header.classList.remove('header-scrolled');
+        return;
+      }
+    }
+
+    // 데스크톱 롱스크롤: 60px 기준 스크롤 위치에 따른 동적 자동 반전
     if (window.scrollY > scrollThreshold) {
       header.classList.add('header-scrolled');
     } else {
@@ -1425,6 +1441,11 @@ document.addEventListener('DOMContentLoaded', () => {
         sec.classList.remove('mobile-active-section');
       }
     });
+
+    // 섹션 전환에 따른 헤더 자동 반전 즉시 동기화
+    if (typeof updateHeaderOnScroll === 'function') {
+      updateHeaderOnScroll();
+    }
 
     // 섹션이 '실제로 변경'되었거나 명시적으로 forceScrollTop이 요청된 경우에만 최상단으로 스크롤!
     // 동일 섹션 내에서의 툴바 토글/리사이즈/최하단 도달 시에는 현재 스크롤 위치를 절대 건드리지 않음!

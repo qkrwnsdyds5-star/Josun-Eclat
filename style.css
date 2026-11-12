@@ -4380,6 +4380,34 @@ section[id] {
   body.mobile-section-mode:not(.mobile-hero-active) main#main-content > section.mobile-active-section {
     padding-top: calc(var(--header-height, 70px) + 20px) !important;
   }
+
+  /* [헤더 자동 반전] 모바일에서 Hero가 아닌 모든 섹션(화이트 및 연한 주황색/크림 배경)에서는 항상 다크 텍스트 & 백색 블러 헤더 적용 */
+  body.mobile-section-mode:not(.mobile-hero-active) .site-header {
+    background-color: rgba(255, 255, 255, 0.98) !important;
+    border-bottom: 1px solid var(--color-border-subtle) !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+  }
+
+  body.mobile-section-mode:not(.mobile-hero-active) .site-header .brand-logo,
+  body.mobile-section-mode:not(.mobile-hero-active) .site-header .logo-title,
+  body.mobile-section-mode:not(.mobile-hero-active) .site-header .logo-sub {
+    color: var(--color-text-primary) !important;
+  }
+
+  body.mobile-section-mode:not(.mobile-hero-active) .site-header .btn-menu-toggle .bar {
+    background-color: var(--color-text-primary) !important;
+  }
+
+  body.mobile-section-mode:not(.mobile-hero-active) .site-header .btn-share {
+    color: var(--color-text-primary) !important;
+  }
+
+  body.mobile-section-mode:not(.mobile-hero-active) .site-header .welcome-tag {
+    border-color: var(--color-primary-gold) !important;
+    color: var(--color-primary-gold) !important;
+  }
 }
 
 @keyframes mobileSectionFadeIn {
